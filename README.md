@@ -1,6 +1,6 @@
 # gtk_python
 
-![python_gtk](https://github.com/antonovmike/gtk_python/blob/test/Screenshot.png)
+![python_gtk](https://github.com/antonovmike/gtk_python/blob/main/Screenshot.png)
 
 ```bash
 python -m pip install --upgrade pip
