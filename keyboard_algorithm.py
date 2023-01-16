@@ -13,7 +13,8 @@ class GridWindow(Gtk.Window):
         grid = Gtk.Grid()
 
         entry = Gtk.Entry()
-        entry.set_placeholder_text("Text")
+        entry.set_text("Hello World")
+        # entry.set_placeholder_text("Text")
         grid.attach(entry, 0, 0, 3, 1)
 
         while index < 10:
@@ -43,8 +44,13 @@ class GridWindow(Gtk.Window):
         grid.attach(button_minus, 4, 2, 1, 1)
         grid.attach(button_mult, 4, 3, 1, 1)
         grid.attach(button_div, 4, 4, 1, 1)
+# FIX IT
+        button_c.connect("clicked", self.on_button_clicked)
 
         self.add(grid)
+# FIX IT
+    def on_button_clicked(self, entry):
+        entry.set_text("TEST")
 
 
 win = GridWindow()
