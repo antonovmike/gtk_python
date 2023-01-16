@@ -1,78 +1,52 @@
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib
+from gi.repository import Gtk
 
 
-class EntryWindow(Gtk.Window):
+class GridWindow(Gtk.Window):
     def __init__(self):
-        super().__init__(title="Entry Demo")
-        self.set_size_request(200, 100)
 
-        self.timeout_id = None
+        super().__init__(title="Grid Example")
 
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        self.add(vbox)
+        index = 0
+        grid = Gtk.Grid()
 
-        self.entry = Gtk.Entry()
-        self.entry.set_text("Hello World")
-        vbox.pack_start(self.entry, True, True, 0)
+        entry = Gtk.Entry()
+        grid.attach(entry, 0, 0, 3, 1)
 
-        hbox = Gtk.Box(spacing=6)
-        vbox.pack_start(hbox, True, True, 0)
+        while index < 10:
+            button = Gtk.Button(label=f"{index}")
+            if index < 3:
+                grid.attach(button, index, 1, 1, 1)
+            elif 2 < index < 6:
+                grid.attach(button, index-3, 2, 1, 1)
+            elif 5 < index < 9:
+                grid.attach(button, index-6, 3, 1, 1)
+            index += 1
 
-        self.check_editable = Gtk.CheckButton(label="Editable")
-        self.check_editable.connect("toggled", self.on_editable_toggled)
-        self.check_editable.set_active(True)
-        hbox.pack_start(self.check_editable, True, True, 0)
+        button_dot = Gtk.Button(label=".")
+        button0 = Gtk.Button(label="0")
+        button_eq = Gtk.Button(label="=")
+        grid.attach(button_dot, 0, 4, 1, 1)
+        grid.attach(button0, 1, 4, 1, 1)
+        grid.attach(button_eq, 2, 4, 1, 1)
 
-        self.check_visible = Gtk.CheckButton(label="Visible")
-        self.check_visible.connect("toggled", self.on_visible_toggled)
-        self.check_visible.set_active(True)
-        hbox.pack_start(self.check_visible, True, True, 0)
+        button_c = Gtk.Button(label="C")
+        button_plus = Gtk.Button(label="+")
+        button_minus = Gtk.Button(label="-")
+        button_mult = Gtk.Button(label="*")
+        button_div = Gtk.Button(label="/")
+        grid.attach(button_c, 4, 0, 1, 1)
+        grid.attach(button_plus, 4, 1, 1, 1)
+        grid.attach(button_minus, 4, 2, 1, 1)
+        grid.attach(button_mult, 4, 3, 1, 1)
+        grid.attach(button_div, 4, 4, 1, 1)
 
-        self.pulse = Gtk.CheckButton(label="Pulse")
-        self.pulse.connect("toggled", self.on_pulse_toggled)
-        self.pulse.set_active(False)
-        hbox.pack_start(self.pulse, True, True, 0)
-
-        self.icon = Gtk.CheckButton(label="Icon")
-        self.icon.connect("toggled", self.on_icon_toggled)
-        self.icon.set_active(False)
-        hbox.pack_start(self.icon, True, True, 0)
-
-    def on_editable_toggled(self, button):
-        value = button.get_active()
-        self.entry.set_editable(value)
-
-    def on_visible_toggled(self, button):
-        value = button.get_active()
-        self.entry.set_visibility(value)
-
-    def on_pulse_toggled(self, button):
-        if button.get_active():
-            self.entry.set_progress_pulse_step(0.2)
-            # Call self.do_pulse every 100 ms
-            self.timeout_id = GLib.timeout_add(100, self.do_pulse, None)
-        else:
-            # Don't call self.do_pulse anymore
-            GLib.source_remove(self.timeout_id)
-            self.timeout_id = None
-            self.entry.set_progress_pulse_step(0)
-
-    def do_pulse(self, user_data):
-        self.entry.progress_pulse()
-        return True
-
-    def on_icon_toggled(self, button):
-        if button.get_active():
-            icon_name = "system-search-symbolic"
-        else:
-            icon_name = None
-        self.entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, icon_name)
+        self.add(grid)
 
 
-win = EntryWindow()
+win = GridWindow()
 win.connect("destroy", Gtk.main_quit)
 win.show_all()
 Gtk.main()
